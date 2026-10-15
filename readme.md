@@ -850,11 +850,11 @@ Namtar is part of the **Kigal stack** — a set of native infrastructure compone
 
 **[Kigal](https://kigal.co)** is the philosophy: *from an infrastructure stack to an infrastructure runtime*. One binary. Zero dependencies. A single execution layer. And your data never leaves your infrastructure.
 
-The stack is named after Sumerian mythology:
+The stack is named after Sumerian and Greek mythology:
 
 | Layer | Name | Role |
 |-------|------|------|
-| **The Runtime** | **Ereshkigal** | Native infrastructure runtime — C, one binary, all layers |
+| **The Runtime** | **Ereshkigal** | Native infrastructure runtime — One binary, all layers |
 | **The Framework** | **Namtar** | Lua application framework — routing, ORM, templates, business logic |
 | **The Spider** | **Arachne** | Statistical / inferential graph engine |
 | **The Tree** | **GishKigal** | Graph database + analytics studio |
