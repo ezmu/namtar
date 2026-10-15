@@ -1,5 +1,5 @@
 
-# Namtar
+# 𒋻 Namtar
 
 > **A full-stack Lua web framework that runs inside [Ereshkigal](https://kigal.co) — a native infrastructure runtime.**
 
@@ -908,7 +908,7 @@ For larger changes, open an issue first to discuss the approach.
 ### Development setup
 
 ```bash
-git clone https://github.com/your-org/namtar.git
+git clone https://github.com/ezmu/namtar.git
 cd namtar
 
 # Install Lua 5.4 + luasql
