@@ -1,0 +1,23 @@
+<section>
+    <div class="row-between">
+        <h2>Articles</h2>
+        <a href="{{app.admin_path}}/articles/new" class="btn btn-primary">+ New Article</a>
+    </div>
+    <table class="table">
+        <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Views</th><th></th></tr></thead>
+        <tbody>
+        {{#each articles}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{status}}</td>
+                <td>{{views}}</td>
+                <td>
+                    <a href="{{app.admin_path}}/articles/{{id}}/edit">edit</a>
+                    <a href="{{app.admin_path}}/articles/{{id}}/delete" onclick="return confirm('Delete?')">delete</a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</section>

@@ -1,0 +1,901 @@
+<style>
+/* ══════════════════════════════════════════════════ */
+/* Ereshkigal Control Center                         */
+/* ══════════════════════════════════════════════════ */
+
+.ek-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+}
+.ek-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #111827;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+.ek-header h2 span {
+    color: #3b82f6;
+}
+.ek-header .status-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.ek-header .status-live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Tabs */
+.ek-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    overflow-x: auto;
+}
+.ek-tab {
+    padding: 10px 18px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.ek-tab:hover { color: #111827; background: #f9fafb; }
+.ek-tab.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+}
+
+/* Panels */
+.ek-panel { display: none; }
+.ek-panel.active { display: block; animation: fadeIn 0.2s; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stat grid */
+.ek-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.ek-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 18px;
+    transition: all 0.15s;
+}
+.ek-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+.ek-card-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.ek-card-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+.ek-card-sub {
+    font-size: 12px;
+    color: #9ca3af;
+}
+.ek-card-value.ok { color: #10b981; }
+.ek-card-value.warn { color: #f59e0b; }
+.ek-card-value.err { color: #ef4444; }
+.ek-card-value.info { color: #3b82f6; }
+
+/* Section */
+.ek-section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.ek-section h3 {
+    margin: 0 0 16px 0;
+    font-size: 15px;
+    color: #111827;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Table */
+.ek-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.ek-table th {
+    text-align: left;
+    padding: 10px 12px;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #f3f4f6;
+    background: #fafbfc;
+}
+.ek-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #374151;
+}
+.ek-table tr:hover { background: #f9fafb; }
+
+/* Badges */
+.ek-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.ek-badge.ok    { background: #d1fae5; color: #065f46; }
+.ek-badge.warn  { background: #fef3c7; color: #92400e; }
+.ek-badge.err   { background: #fee2e2; color: #991b1b; }
+.ek-badge.info  { background: #dbeafe; color: #1e40af; }
+.ek-badge.gray  { background: #f3f4f6; color: #374151; }
+
+/* Buttons */
+.ek-btn {
+    display: inline-block;
+    padding: 7px 14px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    transition: all 0.15s;
+}
+.ek-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+.ek-btn-primary {
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+}
+.ek-btn-primary:hover { background: #2563eb; border-color: #2563eb; }
+.ek-btn-danger {
+    background: #ef4444;
+    color: #fff;
+    border-color: #ef4444;
+}
+.ek-btn-danger:hover { background: #dc2626; border-color: #dc2626; }
+.ek-btn-sm { padding: 4px 10px; font-size: 12px; }
+
+/* Input */
+.ek-input {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 13px;
+    width: 100%;
+    transition: border-color 0.15s;
+}
+.ek-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ek-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+/* Empty state */
+.ek-empty {
+    text-align: center;
+    padding: 32px;
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 13px;
+}
+
+/* Toast */
+.ek-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    background: #111827;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    z-index: 9999;
+}
+.ek-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.ek-toast.ok { background: #059669; }
+.ek-toast.err { background: #dc2626; }
+
+/* Loader */
+.ek-loading {
+    text-align: center;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 13px;
+}
+</style>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- Ereshkigal Control Center                        -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<div class="ek-header">
+    <h2>⚡ Ereshkigal <span>Control Center</span></h2>
+    <div class="status-live">LIVE</div>
+</div>
+
+<div class="ek-tabs">
+    <button class="ek-tab active" data-tab="overview">📊 Overview</button>
+    <button class="ek-tab" data-tab="cache">💾 Cache</button>
+    <button class="ek-tab" data-tab="ft">🔍 Full-Text</button>
+    <button class="ek-tab" data-tab="graph">🕸️ Graph</button>
+    <button class="ek-tab" data-tab="security">🛡️ Security</button>
+    <button class="ek-tab" data-tab="persistence">💿 Snapshots</button>
+    <button class="ek-tab" data-tab="quantum">⚛️ Quantum</button>
+    <button class="ek-tab" data-tab="config">⚙️ Config</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="ek-panel active" id="panel-overview">
+    <div class="ek-grid" id="overview-stats">
+        <div class="ek-card"><div class="ek-card-label">Loading...</div></div>
+    </div>
+    <div class="ek-section">
+        <h3>💡 Recommendations</h3>
+        <div id="overview-recommendations" class="ek-empty">Loading...</div>
+    </div>
+    <div class="ek-section">
+        <h3>🔥 Top Routes</h3>
+        <div id="overview-top-routes" class="ek-empty">Loading...</div>
+    </div>
+</div>
+
+<!-- CACHE -->
+<div class="ek-panel" id="panel-cache">
+    <div class="ek-grid" id="cache-stats"></div>
+    <div class="ek-section">
+        <h3>
+            Cache Entries
+            <div>
+                <button class="ek-btn ek-btn-sm" onclick="Cache.cleanup()">🧹 Purge</button>
+                <button class="ek-btn ek-btn-sm ek-btn-danger" onclick="Cache.clearAll()">🗑️ Clear All</button>
+            </div>
+        </h3>
+        <div class="ek-row">
+            <input class="ek-input" id="cache-search" placeholder="🔍 Search cache keys..." oninput="Cache.filter(this.value)">
+        </div>
+        <div id="cache-entries" class="ek-empty">Loading...</div>
+    </div>
+</div>
+
+<!-- FULL-TEXT -->
+<div class="ek-panel" id="panel-ft">
+    <div class="ek-section">
+        <h3>Indexes</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="ft-index-name" placeholder="Index name...">
+            <button class="ek-btn ek-btn-primary" onclick="FT.create()">+ Create</button>
+        </div>
+        <div id="ft-indexes" class="ek-empty">Loading...</div>
+    </div>
+    <div class="ek-section">
+        <h3>Search</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="ft-search-index" placeholder="Index name">
+            <input class="ek-input" id="ft-search-q" placeholder="Search query...">
+            <button class="ek-btn ek-btn-primary" onclick="FT.search()">🔍 Search</button>
+        </div>
+        <div id="ft-results" class="ek-empty">Type a query to search</div>
+    </div>
+</div>
+
+<!-- GRAPH -->
+<div class="ek-panel" id="panel-graph">
+    <div class="ek-grid" id="graph-stats"></div>
+    <div class="ek-section">
+        <h3>Add Node</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="graph-node-id" placeholder="Node ID (e.g. user:1)">
+            <button class="ek-btn ek-btn-primary" onclick="Graph.addNode()">+ Add Node</button>
+        </div>
+    </div>
+    <div class="ek-section">
+        <h3>Add Edge</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="graph-from" placeholder="From">
+            <input class="ek-input" id="graph-to" placeholder="To">
+            <input class="ek-input" id="graph-rel" placeholder="Relation">
+            <button class="ek-btn ek-btn-primary" onclick="Graph.addEdge()">+ Add Edge</button>
+        </div>
+    </div>
+    <div class="ek-section">
+        <h3>Actions</h3>
+        <button class="ek-btn ek-btn-danger" onclick="Graph.clear()">🗑️ Clear Graph</button>
+    </div>
+</div>
+
+<!-- SECURITY -->
+<div class="ek-panel" id="panel-security">
+    <div class="ek-grid" id="security-stats"></div>
+    <div class="ek-section">
+        <h3>Blacklist</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="security-blacklist-ip" placeholder="IP address">
+            <input class="ek-input" id="security-blacklist-reason" placeholder="Reason (optional)">
+            <button class="ek-btn ek-btn-danger" onclick="Security.blacklist()">🚫 Ban</button>
+        </div>
+        <div id="security-blacklist" class="ek-empty">Loading...</div>
+    </div>
+    <div class="ek-section">
+        <h3>Whitelist</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="security-whitelist-ip" placeholder="IP address">
+            <button class="ek-btn ek-btn-primary" onclick="Security.whitelist()">✅ Allow</button>
+        </div>
+        <div id="security-whitelist" class="ek-empty">Loading...</div>
+    </div>
+</div>
+
+<!-- PERSISTENCE -->
+<div class="ek-panel" id="panel-persistence">
+    <div class="ek-section">
+        <h3>Snapshots</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="persist-name" placeholder="Snapshot name (optional)">
+            <button class="ek-btn ek-btn-primary" onclick="Persistence.save()">💾 Save</button>
+        </div>
+        <div id="persist-list" class="ek-empty">Loading...</div>
+    </div>
+</div>
+
+<!-- QUANTUM -->
+<div class="ek-panel" id="panel-quantum">
+    <div class="ek-grid" id="quantum-stats"></div>
+    <div class="ek-section">
+        <h3>Quantum Search</h3>
+        <div class="ek-row">
+            <input class="ek-input" id="quantum-q" placeholder="Search query...">
+            <button class="ek-btn ek-btn-primary" onclick="Quantum.search()">⚛️ Search</button>
+        </div>
+        <div id="quantum-results" class="ek-empty">Type a query</div>
+    </div>
+</div>
+
+<!-- CONFIG -->
+<div class="ek-panel" id="panel-config">
+    <div class="ek-section">
+        <h3>Configuration</h3>
+        <div id="config-data" class="ek-empty">Loading...</div>
+    </div>
+    <div class="ek-section">
+        <h3>License</h3>
+        <div id="config-license" class="ek-empty">Loading...</div>
+    </div>
+</div>
+
+<div id="ek-toast" class="ek-toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// Helpers
+// ══════════════════════════════════════════════════
+
+const API = "{{app.admin_path}}/system/api";
+
+function toast(msg, type) {
+    const el = document.getElementById("ek-toast");
+    el.textContent = msg;
+    el.className = "ek-toast show " + (type || "");
+    setTimeout(() => { el.className = "ek-toast"; }, 2500);
+}
+
+async function apiGet(path) {
+    const r = await fetch(API + path);
+    return await r.json();
+}
+
+async function apiPost(path, data) {
+    const r = await fetch(API + path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data || {})
+    });
+    return await r.json();
+}
+
+function esc(s) {
+    return String(s == null ? "" : s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function card(label, value, sub, cls) {
+    return `<div class="ek-card">
+        <div class="ek-card-label">${esc(label)}</div>
+        <div class="ek-card-value ${cls || ''}">${esc(value)}</div>
+        ${sub ? `<div class="ek-card-sub">${esc(sub)}</div>` : ''}
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// Tabs
+// ══════════════════════════════════════════════════
+
+document.querySelectorAll(".ek-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".ek-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".ek-panel").forEach(p => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+        
+        // Load data on tab switch
+        const loaders = {
+            overview: Overview.load,
+            cache: Cache.load,
+            ft: FT.load,
+            graph: Graph.load,
+            security: Security.load,
+            persistence: Persistence.load,
+            quantum: Quantum.load,
+            config: Config.load
+        };
+        if (loaders[tab.dataset.tab]) loaders[tab.dataset.tab]();
+    });
+});
+
+// ══════════════════════════════════════════════════
+// OVERVIEW
+// ══════════════════════════════════════════════════
+
+const Overview = {
+    async load() {
+        try {
+            const d = await apiGet("/overview");
+            const s = d.stats || {};
+            const ps = d.profiler?.state || {};
+            const lic = d.license || {};
+            const sec = d.security || {};
+            
+            document.getElementById("overview-stats").innerHTML =
+                card("Total Requests", (s.total_requests || 0).toLocaleString(), "all time", "info") +
+                card("Cache Hits", (s.cache_hits || 0).toLocaleString(), (s.hit_rate || 0).toFixed(1) + "% hit rate", "ok") +
+                card("Cache Entries", (s.cache_entries || 0).toLocaleString(), "in SHM") +
+                card("Profiler", ps.enabled ? "ENABLED" : "DISABLED", "sampling " + (ps.sampling_rate || 0) + "%", ps.enabled ? "ok" : "err") +
+                card("Tracked Routes", ps.route_count || 0, "profiler") +
+                card("License", lic.valid ? "VALID" : "INVALID", (lic.days_left || 0) + " days left", lic.valid ? "ok" : "err");
+            
+            // Recommendations
+            const recs = d.profiler?.recommendations?.recommendations || [];
+            const recEl = document.getElementById("overview-recommendations");
+            if (recs.length === 0) {
+                recEl.innerHTML = '<div class="ek-empty">No recommendations yet</div>';
+            } else {
+                recEl.innerHTML = '<table class="ek-table"><thead><tr><th>P</th><th>Route</th><th>Recommendation</th></tr></thead><tbody>' +
+                    recs.map(r => `<tr>
+                        <td><span class="ek-badge ${r.priority >= 8 ? 'err' : (r.priority >= 5 ? 'warn' : 'gray')}">${r.priority}</span></td>
+                        <td><code>${esc(r.route)}</code></td>
+                        <td>${esc(r.recommendation)}</td>
+                    </tr>`).join('') + '</tbody></table>';
+            }
+            
+            // Top routes
+            const top = d.top_routes?.routes || [];
+            const topEl = document.getElementById("overview-top-routes");
+            if (top.length === 0) {
+                topEl.innerHTML = '<div class="ek-empty">No route data</div>';
+            } else {
+                topEl.innerHTML = '<table class="ek-table"><thead><tr><th>Route</th><th>Requests</th></tr></thead><tbody>' +
+                    top.map(r => `<tr>
+                        <td><code>${esc(r.name)}</code></td>
+                        <td>${(r.requests || 0).toLocaleString()}</td>
+                    </tr>`).join('') + '</tbody></table>';
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+};
+
+// ══════════════════════════════════════════════════
+// CACHE
+// ══════════════════════════════════════════════════
+
+const Cache = {
+    allEntries: [],
+    
+    async load() {
+        try {
+            const d = await apiGet("/cache");
+            const r = d.report || {};
+            const s = d.status || {};
+            
+            document.getElementById("cache-stats").innerHTML =
+                card("Entries", (d.count || 0).toLocaleString(), "in memory") +
+                card("Status", s.status || "unknown", s.health || "", s.health === "healthy" ? "ok" : "warn") +
+                card("Usage", (s.usage_percent || 0).toFixed(1) + "%", (s.data_pool_used || 0) + " / " + (s.data_pool_total || 0) + " bytes");
+            
+            this.allEntries = r.entries || [];
+            this.render(this.allEntries);
+        } catch (e) {
+            console.error(e);
+        }
+    },
+    
+    filter(q) {
+        if (!q) {
+            this.render(this.allEntries);
+            return;
+        }
+        q = q.toLowerCase();
+        const filtered = this.allEntries.filter(e => (e.key || "").toLowerCase().includes(q));
+        this.render(filtered);
+    },
+    
+    render(entries) {
+        const el = document.getElementById("cache-entries");
+        if (!entries || entries.length === 0) {
+            el.innerHTML = '<div class="ek-empty">No cache entries</div>';
+            return;
+        }
+        el.innerHTML = '<table class="ek-table"><thead><tr><th>Key</th><th>Size</th><th>TTL</th><th>Type</th><th></th></tr></thead><tbody>' +
+            entries.slice(0, 200).map(e => {
+                const ttl = e.expires ? Math.max(0, e.expires - Math.floor(Date.now()/1000)) : "∞";
+                return `<tr>
+                    <td><code>${esc(e.key)}</code></td>
+                    <td>${(e.size || 0).toLocaleString()}</td>
+                    <td>${ttl}s</td>
+                    <td><span class="ek-badge gray">${esc(e.content_type || "unknown")}</span></td>
+                    <td><button class="ek-btn ek-btn-sm ek-btn-danger" onclick="Cache.del('${esc(e.key).replace(/'/g, "\\'")}')">Delete</button></td>
+                </tr>`;
+            }).join('') + '</tbody></table>';
+    },
+    
+    async del(key) {
+        if (!confirm("Delete key: " + key + "?")) return;
+        const r = await apiPost("/cache/del", { key });
+        toast(r.ok ? "Deleted" : "Failed", r.ok ? "ok" : "err");
+        this.load();
+    },
+    
+    async cleanup() {
+        const r = await apiPost("/cache/cleanup", {});
+        toast("Cleaned " + (r.cleaned || 0) + " entries", "ok");
+        this.load();
+    },
+    
+    async clearAll() {
+        if (!confirm("Clear ALL cache entries?")) return;
+        await apiPost("/cache/clear", {});
+        toast("Cache cleared", "ok");
+        this.load();
+    }
+};
+
+// ══════════════════════════════════════════════════
+// FULL-TEXT
+// ══════════════════════════════════════════════════
+
+const FT = {
+    async load() {
+        try {
+            const d = await apiGet("/ft");
+            const idx = d.indexes?.indexes || d.indexes || [];
+            const el = document.getElementById("ft-indexes");
+            if (!Array.isArray(idx) || idx.length === 0) {
+                el.innerHTML = '<div class="ek-empty">No indexes</div>';
+                return;
+            }
+            el.innerHTML = '<table class="ek-table"><thead><tr><th>Name</th><th>Language</th><th>Docs</th></tr></thead><tbody>' +
+                idx.map(i => `<tr>
+                    <td><code>${esc(i.name)}</code></td>
+                    <td>${esc(i.lang || "en")}</td>
+                    <td>${(i.doc_count || 0).toLocaleString()}</td>
+                </tr>`).join('') + '</tbody></table>';
+        } catch (e) {
+            console.error(e);
+        }
+    },
+    
+    async create() {
+        const name = document.getElementById("ft-index-name").value.trim();
+        if (!name) { toast("Enter index name", "err"); return; }
+        const r = await apiPost("/ft/create", { name, lang: "en", size_mb: 64 });
+        toast(r.ok ? "Index created" : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("ft-index-name").value = "";
+        this.load();
+    },
+    
+    async search() {
+        const index = document.getElementById("ft-search-index").value.trim();
+        const q = document.getElementById("ft-search-q").value.trim();
+        if (!index || !q) { toast("Enter index and query", "err"); return; }
+        const r = await apiGet("/ft/search?index=" + encodeURIComponent(index) + "&q=" + encodeURIComponent(q));
+        const el = document.getElementById("ft-results");
+        if (!r.ok) {
+            el.innerHTML = '<div class="ek-empty">' + esc(r.error || "Search failed") + '</div>';
+            return;
+        }
+        const results = r.results?.results || r.results || [];
+        if (!Array.isArray(results) || results.length === 0) {
+            el.innerHTML = '<div class="ek-empty">No results</div>';
+            return;
+        }
+        el.innerHTML = '<table class="ek-table"><thead><tr><th>Doc ID</th><th>Score</th></tr></thead><tbody>' +
+            results.map(x => `<tr><td>${esc(x.doc_id || x.id)}</td><td>${esc(x.score || "-")}</td></tr>`).join('') + '</tbody></table>';
+    }
+};
+
+// ══════════════════════════════════════════════════
+// GRAPH
+// ══════════════════════════════════════════════════
+
+const Graph = {
+    async load() {
+        try {
+            const d = await apiGet("/graph");
+            const s = d.stats || {};
+            document.getElementById("graph-stats").innerHTML =
+                card("Nodes", (s.nodes || 0).toLocaleString(), "in graph", "info") +
+                card("Edges", (s.edges || 0).toLocaleString(), "connections") +
+                card("Data Pool", (s.data_pool_used || 0).toLocaleString(), "bytes used");
+        } catch (e) { console.error(e); }
+    },
+    
+    async addNode() {
+        const id = document.getElementById("graph-node-id").value.trim();
+        if (!id) { toast("Enter node ID", "err"); return; }
+        const r = await apiPost("/graph/node", { id });
+        toast(r.ok ? "Node added" : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("graph-node-id").value = "";
+        this.load();
+    },
+    
+    async addEdge() {
+        const from = document.getElementById("graph-from").value.trim();
+        const to = document.getElementById("graph-to").value.trim();
+        const rel = document.getElementById("graph-rel").value.trim();
+        if (!from || !to || !rel) { toast("Fill all fields", "err"); return; }
+        const r = await apiPost("/graph/edge", { from, to, relation: rel });
+        toast(r.ok ? "Edge added" : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("graph-from").value = "";
+        document.getElementById("graph-to").value = "";
+        document.getElementById("graph-rel").value = "";
+        this.load();
+    },
+    
+    async clear() {
+        if (!confirm("Clear entire graph?")) return;
+        await apiPost("/graph/clear", {});
+        toast("Graph cleared", "ok");
+        this.load();
+    }
+};
+
+// ══════════════════════════════════════════════════
+// SECURITY
+// ══════════════════════════════════════════════════
+
+const Security = {
+    async load() {
+        try {
+            const d = await apiGet("/security");
+            const s = d.stats || {};
+            document.getElementById("security-stats").innerHTML =
+                card("Status", s.status || "unknown", "", "ok") +
+                card("Tracked IPs", (s.tracked_ips || 0).toLocaleString()) +
+                card("Blacklisted", (s.blacklisted || 0).toLocaleString(), "", "err") +
+                card("Blocked", (s.blocked_requests || 0).toLocaleString(), "requests", "warn");
+            
+            const bl = s.blacklist || [];
+            document.getElementById("security-blacklist").innerHTML =
+                bl.length === 0
+                    ? '<div class="ek-empty">No blacklisted IPs</div>'
+                    : '<table class="ek-table"><thead><tr><th>IP</th><th>Reason</th></tr></thead><tbody>' +
+                      bl.map(x => `<tr><td><code>${esc(x.ip)}</code></td><td>${esc(x.reason || "")}</td></tr>`).join('') +
+                      '</tbody></table>';
+            
+            const wl = s.whitelist || [];
+            document.getElementById("security-whitelist").innerHTML =
+                wl.length === 0
+                    ? '<div class="ek-empty">No whitelisted IPs</div>'
+                    : '<table class="ek-table"><thead><tr><th>IP</th></tr></thead><tbody>' +
+                      wl.map(x => `<tr><td><code>${esc(x.ip)}</code></td></tr>`).join('') +
+                      '</tbody></table>';
+        } catch (e) { console.error(e); }
+    },
+    
+    async blacklist() {
+        const ip = document.getElementById("security-blacklist-ip").value.trim();
+        const reason = document.getElementById("security-blacklist-reason").value.trim();
+        if (!ip) { toast("Enter IP", "err"); return; }
+        const r = await apiPost("/security/blacklist", { ip, reason, duration: 3600 });
+        toast(r.ok ? "IP blacklisted" : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("security-blacklist-ip").value = "";
+        document.getElementById("security-blacklist-reason").value = "";
+        this.load();
+    },
+    
+    async whitelist() {
+        const ip = document.getElementById("security-whitelist-ip").value.trim();
+        if (!ip) { toast("Enter IP", "err"); return; }
+        const r = await apiPost("/security/whitelist", { ip });
+        toast(r.ok ? "IP whitelisted" : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("security-whitelist-ip").value = "";
+        this.load();
+    }
+};
+
+// ══════════════════════════════════════════════════
+// PERSISTENCE
+// ══════════════════════════════════════════════════
+
+const Persistence = {
+    async load() {
+        try {
+            const d = await apiGet("/persistence");
+            const list = d.snapshots?.snapshots || d.snapshots || [];
+            const el = document.getElementById("persist-list");
+            if (!Array.isArray(list) || list.length === 0) {
+                el.innerHTML = '<div class="ek-empty">No snapshots</div>';
+                return;
+            }
+            el.innerHTML = '<table class="ek-table"><thead><tr><th>Name</th><th>Size</th><th>Actions</th></tr></thead><tbody>' +
+                list.map(s => {
+                    const name = typeof s === "string" ? s : (s.name || "");
+                    return `<tr>
+                        <td><code>${esc(name)}</code></td>
+                        <td>${esc(s.size || "-")}</td>
+                        <td>
+                            <button class="ek-btn ek-btn-sm ek-btn-primary" onclick="Persistence.load('${esc(name).replace(/'/g,"\\'")}')">Load</button>
+                        </td>
+                    </tr>`;
+                }).join('') + '</tbody></table>';
+        } catch (e) { console.error(e); }
+    },
+    
+    async save() {
+        const name = document.getElementById("persist-name").value.trim();
+        const r = await apiPost("/persistence/save", { name });
+        toast(r.ok ? "Saved: " + r.name : "Failed", r.ok ? "ok" : "err");
+        document.getElementById("persist-name").value = "";
+        this.load();
+    },
+    
+    async load_() {
+        // unused
+    },
+    
+    async load(name) {
+        if (!confirm("Load snapshot: " + name + "?")) return;
+        const r = await apiPost("/persistence/load", { name });
+        toast(r.ok ? "Loaded" : "Failed", r.ok ? "ok" : "err");
+    }
+};
+
+// ══════════════════════════════════════════════════
+// QUANTUM
+// ══════════════════════════════════════════════════
+
+const Quantum = {
+    async load() {
+        try {
+            const d = await apiGet("/quantum");
+            const s = d.stats || {};
+            document.getElementById("quantum-stats").innerHTML =
+                card("Documents", (s.doc_count || s.total_docs || 0).toLocaleString()) +
+                card("Terms", (s.term_count || 0).toLocaleString()) +
+                card("Size", (s.size_mb || 0) + " MB");
+        } catch (e) { console.error(e); }
+    },
+    
+    async search() {
+        const q = document.getElementById("quantum-q").value.trim();
+        if (!q) { toast("Enter query", "err"); return; }
+        const r = await apiGet("/quantum/search?q=" + encodeURIComponent(q));
+        const el = document.getElementById("quantum-results");
+        const results = r.results?.results || r.results || [];
+        if (!Array.isArray(results) || results.length === 0) {
+            el.innerHTML = '<div class="ek-empty">No results</div>';
+            return;
+        }
+        el.innerHTML = '<table class="ek-table"><thead><tr><th>ID</th><th>Content</th></tr></thead><tbody>' +
+            results.map(x => `<tr><td>${esc(x.id)}</td><td>${esc(x.content || x.text || "")}</td></tr>`).join('') + '</tbody></table>';
+    }
+};
+
+// ══════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════
+
+const Config = {
+    async load() {
+        try {
+            const d = await apiGet("/config");
+            const cfg = d.config || {};
+            const rows = Object.keys(cfg).sort().map(k =>
+                `<tr><td><strong>${esc(k)}</strong></td><td>${esc(cfg[k])}</td></tr>`
+            ).join('');
+            document.getElementById("config-data").innerHTML =
+                '<table class="ek-table"><tbody>' + rows + '</tbody></table>';
+            
+            const lic = d.license || {};
+            document.getElementById("config-license").innerHTML =
+                '<table class="ek-table"><tbody>' +
+                `<tr><td>Status</td><td><span class="ek-badge ${lic.valid ? 'ok' : 'err'}">${lic.valid ? 'VALID' : 'INVALID'}</span></td></tr>` +
+                `<tr><td>Days Left</td><td>${esc(lic.days_left)}</td></tr>` +
+                `<tr><td>Message</td><td>${esc(lic.message)}</td></tr>` +
+                '</tbody></table>';
+        } catch (e) { console.error(e); }
+    }
+};
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+
+Overview.load();
+
+// Auto-refresh overview every 10s
+setInterval(() => {
+    const active = document.querySelector(".ek-tab.active")?.dataset.tab;
+    if (active === "overview") Overview.load();
+}, 10000);
+</script>

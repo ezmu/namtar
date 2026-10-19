@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{app.name}} Admin — {{title}}</title>
+<link rel="stylesheet" href="{{app.base_path}}/public/css/app.css">
+</head>
+<body class="admin">
+<aside class="sidebar">
+    <a href="{{app.admin_path}}" class="brand">{{app.name}}</a>
+    <nav>
+        <a href="{{app.admin_path}}" class="{{#if active == 'dashboard'}}active{{/if}}">📊 Dashboard</a>
+        <a href="{{app.admin_path}}/articles" class="{{#if active == 'articles'}}active{{/if}}">📝 Articles</a>
+        <a href="{{app.admin_path}}/pages" class="{{#if active == 'pages'}}active{{/if}}">📄 Pages</a>
+        <a href="{{app.admin_path}}/users" class="{{#if active == 'users'}}active{{/if}}">👥 Users</a>
+        <a href="{{app.admin_path}}/settings" class="{{#if active == 'settings'}}active{{/if}}">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="{{app.base_path}}/">← Site</a>
+        <a href="{{app.base_path}}/logout">Logout</a>
+    </div>
+</aside>
+<main class="admin-main">
+    <header class="admin-header">
+        <h1>{{title}}</h1>
+        <span class="user-badge">{{user.username}} ({{user.role}})</span>
+    </header>
+    {{{content}}}
+</main>
+</body>
+</html>

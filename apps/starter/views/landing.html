@@ -1,0 +1,21 @@
+<section class="hero">
+    <h1>Welcome to <span class="accent">{{app.name}}</span></h1>
+    <p class="lead">{{app.description}}</p>
+    <div class="cta">
+        <a href="{{app.base_path}}/login" class="btn btn-primary">Login</a>
+        <a href="{{app.base_path}}/register" class="btn">Register</a>
+    </div>
+</section>
+
+<section class="recent">
+    <h2>Latest Articles</h2>
+    <div class="articles-grid">
+        {{#each recent}}
+        <article class="card">
+            <h3><a href="{{app.base_path}}/a/{{slug}}">{{title}}</a></h3>
+            <p>{{excerpt}}</p>
+            <span class="meta">👁 {{views}} views</span>
+        </article>
+        {{/each}}
+    </div>
+</section>

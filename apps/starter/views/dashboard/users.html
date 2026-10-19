@@ -1,0 +1,32 @@
+<section>
+    <h2>Users</h2>
+    <form method="POST" action="{{app.admin_path}}/users" class="form-inline">
+        <input name="username" placeholder="Username" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <select name="role">
+            <option value="user">User</option>
+            <option value="editor">Editor</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button class="btn btn-primary">Add</button>
+    </form>
+    <table class="table">
+        <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr></thead>
+        <tbody>
+        {{#each users}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{username}}</td>
+                <td>{{email}}</td>
+                <td>{{role}}</td>
+                <td>{{active}}</td>
+                <td>
+                    <a href="{{app.admin_path}}/users/{{id}}/toggle">toggle</a>
+                    <a href="{{app.admin_path}}/users/{{id}}/delete" onclick="return confirm('Delete?')">delete</a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</section>

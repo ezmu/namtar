@@ -1,0 +1,17 @@
+<section>
+    <form method="POST" action="{{app.admin_path}}/pages" class="form">
+        <input type="hidden" name="id" value="{{page.id}}">
+        <label>Title <input name="title" value="{{page.title}}" required></label>
+        <label>Slug (optional) <input name="slug" value="{{page.slug}}"></label>
+        <label>Body <textarea name="body" rows="15">{{page.body}}</textarea></label>
+        <label>Status
+            <select name="status">
+                <option value="published" {{#if page.status == 'published'}}selected{{/if}}>Published</option>
+                <option value="draft" {{#if page.status == 'draft'}}selected{{/if}}>Draft</option>
+            </select>
+        </label>
+        <label><input type="checkbox" name="show_in_menu" value="1" {{#if page.show_in_menu == 1}}checked{{/if}}> Show in menu</label>
+        <label>Menu order <input type="number" name="menu_order" value="{{page.menu_order}}"></label>
+        <button class="btn btn-primary">Save</button>
+    </form>
+</section>

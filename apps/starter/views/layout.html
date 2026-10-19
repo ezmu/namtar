@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{app.name}} — {{title}}</title>
+<link rel="stylesheet" href="{{app.base_path}}/public/css/app.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <a href="{{app.base_path}}/" class="brand">{{app.name}}</a>
+        <nav>
+            <a href="{{app.base_path}}/">Home</a>
+            {{#if user}}
+                <a href="{{app.admin_path}}">Dashboard</a>
+                <a href="{{app.base_path}}/logout">Logout ({{user.username}})</a>
+            {{else}}
+                <a href="{{app.base_path}}/login">Login</a>
+                <a href="{{app.base_path}}/register">Register</a>
+            {{/if}}
+        </nav>
+    </div>
+</header>
+<main class="container">
+{{{content}}}
+</main>
+<footer class="site-footer">
+    <div class="container">
+        <p>⚡ Powered by <strong>Namtar Framework</strong> — © {{app.version}}</p>
+    </div>
+</footer>
+</body>
+</html>

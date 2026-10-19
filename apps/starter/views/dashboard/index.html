@@ -1,0 +1,18 @@
+<div class="stat-grid">
+    <div class="stat-card"><span class="stat-value">{{stats.articles}}</span><span>Articles</span></div>
+    <div class="stat-card"><span class="stat-value">{{stats.published}}</span><span>Published</span></div>
+    <div class="stat-card"><span class="stat-value">{{stats.users}}</span><span>Users</span></div>
+    <div class="stat-card"><span class="stat-value">{{stats.pages}}</span><span>Pages</span></div>
+</div>
+
+<section>
+    <h2>Recent Articles</h2>
+    <table class="table">
+        <thead><tr><th>Title</th><th>Status</th><th>Views</th></tr></thead>
+        <tbody>
+        {{#each recent_articles}}
+            <tr><td>{{title}}</td><td>{{status}}</td><td>{{views}}</td></tr>
+        {{/each}}
+        </tbody>
+    </table>
+</section>

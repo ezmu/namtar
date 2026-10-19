@@ -1,0 +1,25 @@
+<section>
+    <form method="POST" action="{{app.admin_path}}/articles" class="form">
+        <input type="hidden" name="id" value="{{article.id}}">
+        <label>Title
+            <input name="title" value="{{article.title}}" required>
+        </label>
+        <label>Slug (optional)
+            <input name="slug" value="{{article.slug}}">
+        </label>
+        <label>Excerpt
+            <textarea name="excerpt" rows="3">{{article.excerpt}}</textarea>
+        </label>
+        <label>Body
+            <textarea name="body" rows="15">{{article.body}}</textarea>
+        </label>
+        <label>Status
+            <select name="status">
+                <option value="draft" {{#if article.status == 'draft'}}selected{{/if}}>Draft</option>
+                <option value="published" {{#if article.status == 'published'}}selected{{/if}}>Published</option>
+                <option value="archived" {{#if article.status == 'archived'}}selected{{/if}}>Archived</option>
+            </select>
+        </label>
+        <button class="btn btn-primary">Save</button>
+    </form>
+</section>

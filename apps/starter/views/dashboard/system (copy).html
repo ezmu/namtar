@@ -1,0 +1,298 @@
+<style>
+.monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.monitor-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+}
+.monitor-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+}
+.monitor-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 4px;
+}
+.monitor-label {
+    font-size: 12px;
+    color: #9ca3af;
+}
+.monitor-section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.monitor-section h2 {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+.monitor-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.monitor-table th {
+    text-align: left;
+    padding: 8px 10px;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e5e7eb;
+}
+.monitor-table td {
+    padding: 10px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #374151;
+}
+.monitor-table tr:last-child td {
+    border-bottom: none;
+}
+.monitor-table tr:hover {
+    background: #f9fafb;
+}
+.badge-priority {
+    display: inline-block;
+    min-width: 28px;
+    text-align: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.badge-priority.high { background: #fee2e2; color: #991b1b; }
+.badge-priority.med  { background: #fef3c7; color: #92400e; }
+.badge-priority.low  { background: #d1fae5; color: #065f46; }
+.badge-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.badge-status.on  { background: #d1fae5; color: #065f46; }
+.badge-status.off { background: #fee2e2; color: #991b1b; }
+.monitor-empty {
+    text-align: center;
+    padding: 24px;
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 13px;
+}
+.monitor-actions {
+    margin-bottom: 16px;
+}
+.monitor-actions a {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #3b82f6;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    margin-right: 8px;
+}
+.monitor-actions a:hover { background: #2563eb; }
+</style>
+
+<div class="monitor-actions">
+    <a href="{{app.admin_path}}/system">🔄 Refresh</a>
+    <a href="{{app.admin_path}}/system/api" target="_blank">📊 JSON API</a>
+</div>
+
+<!-- STATUS -->
+<div class="monitor-grid">
+    <div class="monitor-card">
+        <h3>Profiler</h3>
+        <div class="monitor-value">
+            {{#if profiler_state.enabled}}
+                <span class="badge-status on">ENABLED</span>
+            {{else}}
+                <span class="badge-status off">DISABLED</span>
+            {{/if}}
+        </div>
+        <div class="monitor-label">Sampling: {{profiler_state.sampling_rate}}%</div>
+    </div>
+    
+    <div class="monitor-card">
+        <h3>Tracked Routes</h3>
+        <div class="monitor-value">{{profiler_state.route_count}}</div>
+        <div class="monitor-label">In profiler</div>
+    </div>
+    
+    <div class="monitor-card">
+        <h3>Total Events</h3>
+        <div class="monitor-value">{{analytics_stats.total_events}}</div>
+        <div class="monitor-label">In analytics</div>
+    </div>
+    
+    <div class="monitor-card">
+        <h3>Analytics Routes</h3>
+        <div class="monitor-value">{{analytics_stats.total}}</div>
+        <div class="monitor-label">Being tracked</div>
+    </div>
+</div>
+
+<!-- PROFILER RECOMMENDATIONS -->
+<div class="monitor-section">
+    <h2>💡 Recommendations</h2>
+    {{#if recommendations.recommendations}}
+    <table class="monitor-table">
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Route</th>
+                <th>Recommendation</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each recommendations.recommendations}}
+            <tr>
+                <td>
+                    {{#if priority == '10'}}<span class="badge-priority high">{{priority}}</span>
+                    {{else}}{{#if priority == '9'}}<span class="badge-priority high">{{priority}}</span>
+                    {{else}}{{#if priority == '8'}}<span class="badge-priority med">{{priority}}</span>
+                    {{else}}<span class="badge-priority low">{{priority}}</span>{{/if}}{{/if}}{{/if}}
+                </td>
+                <td><strong>{{route}}</strong></td>
+                <td>{{recommendation}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="monitor-empty">No recommendations yet — profiler needs more data</div>
+    {{/if}}
+</div>
+
+<!-- TOP ROUTES -->
+<div class="monitor-section">
+    <h2>🔥 Top Routes (Last 7 Days)</h2>
+    {{#if top_routes.routes}}
+    <table class="monitor-table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Requests</th>
+                <th>Level</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each top_routes.routes}}
+            <tr>
+                <td><strong>{{name}}</strong></td>
+                <td>{{requests}}</td>
+                <td>{{level}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="monitor-empty">No top routes data</div>
+    {{/if}}
+</div>
+
+<!-- SLOW ROUTES -->
+<div class="monitor-section">
+    <h2>🐢 Slow Routes</h2>
+    {{#if slow_routes.routes}}
+    <table class="monitor-table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Avg Time</th>
+                <th>Requests</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each slow_routes.routes}}
+            <tr>
+                <td><strong>{{name}}</strong></td>
+                <td>{{avg_time_ms}} ms</td>
+                <td>{{requests}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="monitor-empty">No slow routes data</div>
+    {{/if}}
+</div>
+
+<!-- PROFILER DETAILS -->
+<div class="monitor-section">
+    <h2>⚡ Profiler Details</h2>
+    {{#if profiler_report.routes}}
+    <table class="monitor-table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Requests</th>
+                <th>Avg CPU</th>
+                <th>P95</th>
+                <th>CPU %</th>
+                <th>Cache Hits/Misses</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each profiler_report.routes}}
+            <tr>
+                <td><strong>{{route}}</strong></td>
+                <td>{{total_requests}}</td>
+                <td>{{avg_cpu_us}} μs</td>
+                <td>{{p95_latency_us}} μs</td>
+                <td>{{cpu_usage_percent}}%</td>
+                <td>{{cache_hits}} / {{cache_misses}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="monitor-empty">No profiler data yet</div>
+    {{/if}}
+</div>
+
+<!-- ERROR ROUTES -->
+<div class="monitor-section">
+    <h2>⚠️ Error Routes</h2>
+    {{#if error_routes.routes}}
+    <table class="monitor-table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>4xx</th>
+                <th>5xx</th>
+                <th>Total Requests</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each error_routes.routes}}
+            <tr>
+                <td><strong>{{name}}</strong></td>
+                <td>{{errors_4xx}}</td>
+                <td>{{errors_5xx}}</td>
+                <td>{{requests}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <div class="monitor-empty">No error routes — good news!</div>
+    {{/if}}
+</div>

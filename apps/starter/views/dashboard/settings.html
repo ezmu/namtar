@@ -1,0 +1,18 @@
+<section>
+    <h2>Site Settings</h2>
+    <form method="POST" action="{{app.admin_path}}/settings" class="form">
+        <label>Site Name
+            <input name="site_name" value="{{settings.site_name}}">
+        </label>
+        <label>Site Description
+            <input name="site_description" value="{{settings.site_description}}">
+        </label>
+        <label>Contact Email
+            <input name="contact_email" value="{{settings.contact_email}}">
+        </label>
+        <label>Posts Per Page
+            <input type="number" name="posts_per_page" value="{{settings.posts_per_page}}">
+        </label>
+        <button class="btn btn-primary">Save Settings</button>
+    </form>
+</section>

@@ -1,0 +1,17 @@
+<div class="auth-card">
+    <h1>Register</h1>
+    {{#if error}}<div class="error">{{error}}</div>{{/if}}
+    <form method="POST" action="{{app.base_path}}/register">
+        <label>Username
+            <input type="text" name="username" required minlength="3" maxlength="32">
+        </label>
+        <label>Email
+            <input type="email" name="email" required>
+        </label>
+        <label>Password
+            <input type="password" name="password" required minlength="6">
+        </label>
+        <button class="btn btn-primary" type="submit">Create Account</button>
+    </form>
+    <p class="muted">Already registered? <a href="{{app.base_path}}/login">Login</a></p>
+</div>
